@@ -1,0 +1,66 @@
+EXECUTIVE SUMMARY
+
+Project: Factory-to-Customer Shipping Route Efficiency Analysis
+Dataset: Nassau Candy Distributor
+
+1. PURPOSE
+This project analyzes historical order and shipping data to identify route-volume patterns, destination bottlenecks, shipping-mode distributions, business metrics, and shipment-cost prediction behavior.
+
+2. DATASET
+The supplied dataset contains 10,194 records and 19 original fields. No missing values were found in the original columns. Order Date and Ship Date are parsed using the source DD-MM-YYYY format.
+
+3. KEY DESCRIPTIVE FINDINGS
+Total shipments: 10,194
+Total sales: 141,783.63
+Total cost: 48,340.83
+Gross profit: 93,442.80
+
+Factory shipment distribution:
+Lot's O' Nuts: 5,692
+Wicked Choccy's: 4,152
+Secret Factory: 217
+The Other Factory: 100
+Sugar Shack: 33
+
+The two largest factories account for approximately 96.56% of the shipment records in this dataset.
+
+4. ROUTE ANALYSIS
+The highest-volume factory-to-state routes include:
+- Lot's O' Nuts → California: 1,125 shipments
+- Wicked Choccy's → California: 823
+- Lot's O' Nuts → New York: 645
+- Lot's O' Nuts → Texas: 569
+- Wicked Choccy's → New York: 436
+- Wicked Choccy's → Texas: 388
+
+These are volume observations rather than efficiency rankings. Route cost and margin are influenced by factory/product mix and should not be interpreted as causal route effects.
+
+5. SHIPPING MODE
+Shipment counts:
+- Standard Class: 6,120
+- Second Class: 1,979
+- First Class: 1,548
+- Same Day: 547
+
+The historical descriptive analysis shows that Standard Class is the most frequently used mode in the supplied data.
+
+6. MACHINE LEARNING
+A Random Forest regression pipeline was trained to predict Cost using Ship Mode, Factory, State/Province, Region, Division, Product Name, Units, and Sales.
+
+Test performance:
+MAE = 0.00636
+RMSE = 0.08487
+R² = 0.99962
+
+Five-fold cross-validation mean R² = 0.99249 with standard deviation 0.00926.
+
+The model's unusually high performance appears strongly related to relationships among Sales, Units, and Cost in the supplied dataset. It should therefore be presented as a dataset-specific predictive prototype rather than evidence of guaranteed real-world performance.
+
+7. SHIP MODE MODEL TEST
+For one fixed shipment input, replacing Ship Mode with First Class, Same Day, Second Class, and Standard Class resulted in a predicted cost of $2.28 for all four cases. Feature-importance inspection also showed very small importance for Ship Mode. This is a model characteristic, not an error, and the model should not be artificially changed to force different values.
+
+8. DATA QUALITY
+Calculated Lead Time values are unusually large. The project preserves the source dates and reports the calculated values without fabricating or modifying dates. Dashboard users should interpret Lead Time as a source-derived analytical field.
+
+9. OUTPUT
+The Streamlit dashboard provides interactive overview, route analysis, shipping analysis, cost prediction, and ML model-performance sections.
