@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-# Optional visualization/export libraries are handled gracefully.
+
 try:
     import plotly.express as px
     import plotly.graph_objects as go
@@ -32,10 +32,9 @@ except Exception:
     OPENPYXL_OK = False
 
 
-# ============================================================
+
 # FILE / PROJECT CONFIG
-# Put this section at the top of app/streamlit_app.py.
-# ============================================================
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_PATH = PROJECT_ROOT / "data" / "processed_shipping_data.csv"
 ROUTE_PATH = PROJECT_ROOT / "data" / "route_performance.csv"
@@ -55,9 +54,9 @@ st.set_page_config(
 )
 
 
-# ============================================================
+
 # UI / THEME
-# ============================================================
+
 st.markdown(
     """
 <style>
@@ -141,9 +140,9 @@ button[kind="primary"] {border-radius:12px;}
 )
 
 
-# ============================================================
+
 # DATA LOADING
-# ============================================================
+
 @st.cache_data(show_spinner=False)
 def load_data():
     df = pd.read_csv(DATA_PATH)
@@ -180,9 +179,9 @@ except Exception as exc:
     st.stop()
 
 
-# ============================================================
+
 # HELPERS
-# ============================================================
+
 def money(x):
     try:
         return f"${float(x):,.2f}"
@@ -335,9 +334,9 @@ def filtered_data(base):
     return out
 
 
-# ============================================================
+
 # SIDEBAR / GLOBAL FILTERS
-# ============================================================
+
 with st.sidebar:
     st.markdown("## 🍫 Nassau Candy")
     st.caption("Supply Chain Intelligence")
@@ -424,9 +423,9 @@ if "Order Date" in filt.columns and filt["Order Date"].notna().any() and len(fil
         comparison = comparison[comparison["Order Date"].between(prev_start, prev_end)]
 
 
-# ============================================================
+
 # HERO
-# ============================================================
+
 st.markdown(
     """
 <div class="hero">
@@ -440,9 +439,9 @@ st.markdown(
 )
 
 
-# ============================================================
+
 # EXECUTIVE OVERVIEW
-# ============================================================
+
 if page == "🏠 Executive Overview":
     st.markdown("### Executive command center")
     st.caption("A decision-ready summary of the currently filtered dataset.")
@@ -554,9 +553,9 @@ if page == "🏠 Executive Overview":
             st.dataframe(dest, width="stretch", hide_index=True)
 
 
-# ============================================================
+
 # EXECUTIVE INSIGHTS
-# ============================================================
+
 elif page == "💡 Executive Insights":
     st.markdown("### Executive insights")
     st.caption("Automatically generated observations from the currently filtered data. These are descriptive, not causal claims.")
@@ -594,9 +593,9 @@ elif page == "💡 Executive Insights":
             st.dataframe(watch, width="stretch", hide_index=True)
 
 
-# ============================================================
+
 # ROUTE INTELLIGENCE
-# ============================================================
+
 elif page == "🛣️ Route Intelligence":
     st.markdown("### Route intelligence")
     st.caption("Explore route volume, cost, lead time and factory-to-destination relationships.")
@@ -677,9 +676,9 @@ elif page == "🛣️ Route Intelligence":
                 st.dataframe(z.head(100), width="stretch", hide_index=True)
 
 
-# ============================================================
+
 # SHIPPING ANALYSIS
-# ============================================================
+
 elif page == "🚚 Shipping Analysis":
     st.markdown("### Shipping analysis")
     st.caption("Compare shipping modes across volume, cost intensity and dataset-derived lead time.")
@@ -718,9 +717,9 @@ elif page == "🚚 Shipping Analysis":
             st.download_button("Download shipping analysis", ss.to_csv(index=False).encode(), "shipping_analysis.csv", "text/csv")
 
 
-# ============================================================
+
 # AI COST PREDICTOR
-# ============================================================
+
 elif page == "🚨 Anomaly Detection":
     st.markdown("### Anomaly detection")
     st.caption("Rule-based screening for unusually expensive shipments and unusual route behavior. No model is retrained.")
@@ -838,9 +837,9 @@ elif page == "🤖 AI Cost Predictor":
             st.info("The input columns must match the preprocessing used when the model was trained.")
 
 
-# ============================================================
+
 # ML PERFORMANCE
-# ============================================================
+
 elif page == "🧪 ML Performance":
     st.markdown("### Machine-learning performance")
     a,b,c,d = st.columns(4)
@@ -888,9 +887,8 @@ elif page == "🧪 ML Performance":
         )
 
 
-# ============================================================
 # ANOMALY DETECTION — also surfaced through Ask the Data
-# ============================================================
+
 elif page == "🔎 Ask the Data":
     st.markdown("### Ask the Data")
     st.caption("Choose a question. Answers are computed directly from the filtered dataframe.")
@@ -947,9 +945,9 @@ elif page == "🔎 Ask the Data":
         st.dataframe(counts.rename("Shipments").reset_index(), width="stretch", hide_index=True)
 
 
-# ============================================================
+
 # DATA EXPLORER
-# ============================================================
+
 elif page == "📦 Data Explorer":
     st.markdown("### Data explorer")
     divs = ["All"] + sorted(df["Division"].dropna().astype(str).unique())
@@ -963,9 +961,9 @@ elif page == "📦 Data Explorer":
     st.download_button("Download filtered CSV", view.to_csv(index=False).encode(), "filtered_shipping_data.csv", "text/csv")
 
 
-# ============================================================
+
 # REPORTS / EXPORTS
-# ============================================================
+
 elif page == "📤 Reports & Exports":
     st.markdown("### Reports & exports")
     st.caption("Create a snapshot of the current filtered dataset for presentation or further analysis.")
@@ -1007,9 +1005,9 @@ elif page == "📤 Reports & Exports":
     st.write("• Filtered_Data  • Routes  • Shipping_Modes")
 
 
-# ============================================================
+
 # ABOUT
-# ============================================================
+
 elif page == "ℹ️ About":
     st.markdown("### About this project")
     st.markdown(
